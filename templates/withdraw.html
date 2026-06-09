@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}طلب سحب{% endblock %}
+{% block content %}
+<h2>📤 طلب سحب نقاط</h2>
+<p>رصيدك: <strong>{{ "%.2f"|format(current_user.balance) }}</strong></p>
+<div class="card"><div class="card-body">
+    <form method="POST">
+        <div class="mb-3"><label>طريقة السحب</label><select name="method_name" class="form-control" required>
+            <option value="">اختر...</option>
+            {% for m in payment_methods %}<option value="{{ m.name }}">{{ m.name }} - {{ m.account_number }}</option>{% endfor %}
+        </select></div>
+        <div class="mb-3"><label>رقم حسابك</label><input type="text" name="account_number" class="form-control" required></div>
+        <div class="mb-3"><label>المبلغ</label><input type="number" name="amount" class="form-control" min="1" max="{{ current_user.balance }}" required></div>
+        <button class="btn btn-warning w-100">📤 إرسال طلب السحب</button>
+    </form>
+</div></div>
+{% endblock %}
