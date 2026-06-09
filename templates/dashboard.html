@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}لوحة التحكم{% endblock %}
+{% block content %}
+<h2>👋 مرحباً {{ current_user.username }}!</h2>
+<div class="row mt-4">
+    <div class="col-md-3"><div class="card stat-card bg-success bg-opacity-25"><h5>💰 الرصيد</h5><p class="number">{{ "%.2f"|format(current_user.balance) }}</p></div></div>
+    <div class="col-md-3"><div class="card stat-card bg-info bg-opacity-25"><h5>📥 إيداعات</h5><p class="number">{{ "%.2f"|format(stats.total_deposited) }}</p></div></div>
+    <div class="col-md-3"><div class="card stat-card bg-warning bg-opacity-25"><h5>🏆 أرباح</h5><p class="number">{{ "%.2f"|format(stats.total_won) }}</p></div></div>
+    <div class="col-md-3"><div class="card stat-card bg-danger bg-opacity-25"><h5>📉 خسائر</h5><p class="number">{{ "%.2f"|format(stats.total_lost) }}</p></div></div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-6"><a href="{{ url_for('deposit') }}" class="btn btn-success w-100 mb-2">📥 إيداع</a></div>
+    <div class="col-md-6"><a href="{{ url_for('withdraw') }}" class="btn btn-warning w-100 mb-2">📤 سحب</a></div>
+</div>
+<h4 class="mt-4">📝 آخر العمليات</h4>
+<div class="table-responsive"><table class="table table-dark table-striped">
+    <thead><tr><th>النوع</th><th>المبلغ</th><th>اللعبة</th><th>التفاصيل</th><th>التاريخ</th></tr></thead>
+    <tbody>{% for t in transactions %}<tr><td>{{ t.type }}</td><td>{{ t.amount }}</td><td>{{ t.game or '-' }}</td><td>{{ t.result or '-' }}</td><td>{{ t.created_at.strftime('%Y-%m-%d %H:%M') }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}
