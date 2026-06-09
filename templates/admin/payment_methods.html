@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}طرق الدفع{% endblock %}
+{% block content %}
+<h2>💳 إدارة طرق الدفع</h2>
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">+ إضافة</button>
+<div class="table-responsive"><table class="table table-dark">
+    <thead><tr><th>الاسم</th><th>الرقم</th><th>المستلم</th><th>الرابط</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+    <tbody>{% for m in methods %}<tr>
+        <td>{{ m.name }}</td><td>{{ m.account_number }}</td><td>{{ m.holder_name }}</td>
+        <td>{% if m.payment_link %}<a href="{{ m.payment_link }}" target="_blank">🔗</a>{% else %}-{% endif %}</td>
+        <td><span class="badge bg-{{ 'success' if m.is_active else 'danger' }}">{{ 'مفعل' if m.is_active else 'معطل' }}</span></td>
+        <td>
+            <button class="btn btn-warning btn-sm" onclick="edit({{ m.id }},'{{ m.name }}','{{ m.account_number or '' }}','{{ m.holder_name or '' }}','{{ m.payment_link or '' }}','{{ m.instructions or '' }}',{{ m.min_deposit }},{{ m.max_deposit }})">✏️</button>
+            <button class="btn btn-sm btn-{{ 'secondary' if m.is_active else 'success' }}" onclick="toggle({{ m.id }})">🔄</button>
+            <button class="btn btn-danger btn-sm" onclick="del({{ m.id }})">🗑️</button>
+        </td>
+    </tr>{% endfor %}</tbody>
+</table></div>
+
+<div class="modal fade" id="addModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content bg-dark text-white"><div class="modal-header"><h5>إضافة محفظة</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+<form method="POST" action="/admin/payment-methods/add"><div class="modal-body">
+    <input name="name" class="form-control mb-2" placeholder="الاسم" required>
+    <input name="account_number" class="form-control mb-2" placeholder="الرقم">
+    <input name="holder_name" class="form-control mb-2" placeholder="المستلم">
+    <input name="payment_link" class="form-control mb-2" placeholder="رابط الدفع">
+    <textarea name="instructions" class="form-control mb-2" placeholder="تعليمات"></textarea>
+    <input name="min_deposit" class="form-control mb-2" placeholder="الحد الأدنى" value="10">
+    <input name="max_deposit" class="form-control mb-2" placeholder="الحد الأقصى" value="10000">
+</div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-success">حفظ</button></div></form></div></div></div>
+
+<div class="modal fade" id="editModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content bg-dark text-white"><div class="modal-header"><h5>تعديل</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+<form id="editForm" method="POST"><div class="modal-body">
+    <input name="name" id="en" class="form-control mb-2" required>
+    <input name="account_number" id="ea" class="form-control mb-2">
+    <input name="holder_name" id="eh" class="form-control mb-2">
+    <input name="payment_link" id="el" class="form-control mb-2">
+    <textarea name="instructions" id="ei" class="form-control mb-2"></textarea>
+    <input name="min_deposit" id="emn" class="form-control mb-2">
+    <input name="max_deposit" id="emx" class="form-control mb-2">
+</div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-warning">تحديث</button></div></form></div></div></div>
+{% endblock %}
+{% block scripts %}
+<script>
+function edit(id,n,a,h,l,i,mn,mx){document.getElementById('editForm').action='/admin/payment-methods/'+id+'/edit';document.getElementById('en').value=n;document.getElementById('ea').value=a;document.getElementById('eh').value=h;document.getElementById('el').value=l;document.getElementById('ei').value=i;document.getElementById('emn').value=mn;document.getElementById('emx').value=mx;new bootstrap.Modal(document.getElementById('editModal')).show();}
+function toggle(id){fetch('/admin/payment-methods/'+id+'/toggle',{method:'POST'}).then(()=>location.reload());}
+function del(id){if(confirm('حذف؟')){fetch('/admin/payment-methods/'+id+'/delete',{method:'POST'}).then(()=>location.reload());}}
+</script>
+{% endblock %}
