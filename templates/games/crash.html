@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}كراش{% endblock %}
+{% block content %}
+<h2>📈 لعبة الكراش</h2>
+<p>رصيدك: <strong id="balance">{{ "%.2f"|format(current_user.balance) }}</strong></p>
+<div class="game-container">
+    <div class="crash-meter" id="meter">1.00x</div>
+    <p id="message"></p>
+    <div class="mb-3"><label>الرهان</label><input type="number" id="bet" class="form-control" min="5" max="500" value="10"></div>
+    <div class="mb-3"><label>اسحب عند</label><input type="number" id="cashout" class="form-control" step="0.1" min="1.1" max="10" value="2"></div>
+    <button class="btn btn-success btn-lg" onclick="play()">📈 ابدأ</button>
+</div>
+<script>
+function play() {
+    fetch('/game/crash', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bet:document.getElementById('bet').value,cashout_at:document.getElementById('cashout').value})})
+    .then(r=>r.json()).then(d=>{
+        document.getElementById('meter').textContent = d.crash_point + 'x';
+        document.getElementById('message').textContent = d.message || (d.won?'ربحت!':'خسرت!');
+        document.getElementById('balance').textContent = d.new_balance.toFixed(2);
+    });
+}
+</script>
+{% endblock %}
