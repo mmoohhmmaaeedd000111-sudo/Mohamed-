@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}إيداع{% endblock %}
+{% block content %}
+<h2>📥 إيداع نقاط</h2>
+<div class="row">
+    {% for m in payment_methods %}
+    <div class="col-md-4 mb-3"><div class="card"><div class="card-header"><h5>{{ m.name }}</h5></div><div class="card-body">
+        <p>📱 {{ m.account_number or '---' }}</p>
+        <p>👤 {{ m.holder_name or '---' }}</p>
+        {% if m.payment_link %}<a href="{{ m.payment_link }}" target="_blank" class="btn btn-info btn-sm w-100 mb-2">🔗 رابط الدفع</a>{% endif %}
+        <p class="text-muted"><small>{{ m.instructions or '' }}</small></p>
+        <form method="POST"><input type="hidden" name="method_id" value="{{ m.id }}">
+            <input type="number" name="amount" class="form-control mb-2" placeholder="المبلغ" min="{{ m.min_deposit }}" max="{{ m.max_deposit }}" required>
+            <button class="btn btn-success w-100">✅ تأكيد</button>
+        </form>
+    </div></div></div>
+    {% endfor %}
+</div>
+{% endblock %}
