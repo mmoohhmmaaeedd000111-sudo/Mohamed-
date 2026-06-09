@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}الإعدادات{% endblock %}
+{% block content %}
+<h2>⚙️ إعدادات النظام</h2>
+<div class="card"><div class="card-body">
+    <form method="POST">
+        <div class="row">
+            <div class="col-md-6 mb-3"><label>نسبة فوز اللاعبين (%)</label><input type="range" class="form-range" name="win_rate" min="1" max="99" value="{{ settings.win_rate }}" oninput="document.getElementById('wv').textContent=this.value+'%'"><span id="wv">{{ settings.win_rate }}%</span></div>
+            <div class="col-md-6 mb-3"><label>نسبة خسارة اللاعبين (%)</label><input type="range" class="form-range" name="loss_rate" min="1" max="99" value="{{ settings.loss_rate }}" oninput="document.getElementById('lv').textContent=this.value+'%'"><span id="lv">{{ settings.loss_rate }}%</span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3"><label>الرصيد الترحيبي</label><input type="number" class="form-control" name="welcome_bonus" value="{{ settings.welcome_bonus }}"></div>
+            <div class="col-md-4 mb-3"><label>هامش ربح المنصة (%)</label><input type="number" class="form-control" name="profit_margin" value="{{ settings.profit_margin }}"></div>
+            <div class="col-md-4 mb-3"><label>كاش باك (%)</label><input type="number" class="form-control" name="cashback_percent" value="{{ settings.cashback_percent }}"></div>
+        </div>
+        <button class="btn btn-primary w-100">💾 حفظ</button>
+    </form>
+</div></div>
+{% endblock %}
