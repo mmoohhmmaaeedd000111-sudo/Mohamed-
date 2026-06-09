@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ 'تسجيل' if register_mode else 'دخول' }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-md-6">
+    <div class="card"><div class="card-header text-center"><h3>{{ '📝 إنشاء حساب جديد' if register_mode else '🔑 تسجيل الدخول' }}</h3></div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('register') if register_mode else url_for('login') }}">
+            <div class="mb-3"><label>اسم المستخدم</label><input type="text" name="username" class="form-control" required></div>
+            {% if register_mode %}<div class="mb-3"><label>البريد الإلكتروني</label><input type="email" name="email" class="form-control" required></div>{% endif %}
+            <div class="mb-3"><label>كلمة المرور</label><input type="password" name="password" class="form-control" required></div>
+            <button type="submit" class="btn btn-primary w-100">{{ 'إنشاء حساب' if register_mode else 'دخول' }}</button>
+        </form>
+        <div class="text-center mt-3">
+            {% if register_mode %}
+                <a href="{{ url_for('login') }}">لديك حساب؟ سجل دخول</a>
+            {% else %}
+                <a href="{{ url_for('register') }}">جديد؟ أنشئ حساباً</a>
+            {% endif %}
+        </div>
+    </div></div>
+</div></div>
+{% endblock %}
