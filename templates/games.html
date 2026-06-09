@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}الألعاب{% endblock %}
+{% block content %}
+<h2>🎮 الألعاب المتاحة</h2>
+<div class="row">
+    {% for g in games %}
+    <div class="col-md-4 mb-3"><div class="card text-center"><div class="card-body">
+        <h3>{% if 'نرد' in g.name %}🎲{% elif 'سلوت' in g.name %}🎰{% else %}📈{% endif %} {{ g.name }}</h3>
+        <p>{{ g.description }}</p>
+        <p>الرهان: {{ g.min_bet }} - {{ g.max_bet }}</p>
+        <a href="/game/{{ 'dice' if 'نرد' in g.name else 'slots' if 'سلوت' in g.name else 'crash' }}" class="btn btn-primary">🎮 العب الآن</a>
+    </div></div></div>
+    {% endfor %}
+</div>
+{% endblock %}
