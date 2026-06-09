@@ -1,0 +1,16 @@
+:root { --primary: #6C5CE7; --secondary: #00CEC9; --success: #00B894; --danger: #D63031; --warning: #FDCB6E; --dark: #2D3436; --light: #F5F6FA; }
+body { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+.card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; transition: transform 0.3s; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(108,92,231,0.3); }
+.card-header { background: rgba(108,92,231,0.3); border-radius: 15px 15px 0 0 !important; }
+.btn-primary { background: linear-gradient(135deg, #6C5CE7, #a855f7); border: none; border-radius: 25px; padding: 10px 25px; }
+.btn-primary:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(108,92,231,0.5); }
+.btn-success { background: linear-gradient(135deg, #00B894, #00CEC9); border: none; border-radius: 25px; }
+.btn-danger { background: linear-gradient(135deg, #D63031, #e17055); border: none; border-radius: 25px; }
+.navbar { background: rgba(45,52,54,0.9) !important; backdrop-filter: blur(10px); border-bottom: 2px solid var(--primary); }
+.game-container { background: rgba(0,0,0,0.3); border-radius: 20px; padding: 30px; text-align: center; margin: 20px 0; }
+.dice-result { font-size: 80px; animation: roll 0.5s; }
+.slot-reel { display: inline-block; width: 80px; height: 80px; line-height: 80px; font-size: 50px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 0 10px; }
+.stat-card { text-align: center; padding: 20px; }
+.stat-card .number { font-size: 32px; font-weight: bold; }
+@keyframes roll { 0% { transform: rotate(0deg) scale(0.5); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(360deg) scale(1); } }
