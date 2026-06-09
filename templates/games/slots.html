@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}سلوتس{% endblock %}
+{% block content %}
+<h2>🎰 آلة السلوتس</h2>
+<p>رصيدك: <strong id="balance">{{ "%.2f"|format(current_user.balance) }}</strong></p>
+<div class="game-container">
+    <div><span class="slot-reel" id="r0">❓</span><span class="slot-reel" id="r1">❓</span><span class="slot-reel" id="r2">❓</span></div>
+    <p id="message"></p>
+    <div class="mb-3"><label>الرهان</label><input type="number" id="bet" class="form-control" min="2" max="1000" value="10"></div>
+    <button class="btn btn-primary btn-lg" onclick="spin()">🎰 تدوير</button>
+</div>
+<script>
+function spin() {
+    fetch('/game/slots', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bet:document.getElementById('bet').value})})
+    .then(r=>r.json()).then(d=>{
+        document.getElementById('r0').textContent = d.result[0];
+        document.getElementById('r1').textContent = d.result[1];
+        document.getElementById('r2').textContent = d.result[2];
+        document.getElementById('message').textContent = d.message || (d.won?'ربحت!':'خسرت!');
+        document.getElementById('balance').textContent = d.new_balance.toFixed(2);
+    });
+}
+</script>
+{% endblock %}
