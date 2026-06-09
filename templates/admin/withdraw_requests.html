@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}طلبات السحب{% endblock %}
+{% block content %}
+<h2>📤 طلبات السحب المعلقة</h2>
+<div class="table-responsive"><table class="table table-dark">
+    <thead><tr><th>المستخدم</th><th>المبلغ</th><th>الطريقة</th><th>الحساب</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+    <tbody>{% for r in pending %}<tr>
+        <td>{{ r.user.username }}</td><td>{{ r.amount }}</td><td>{{ r.payment_method }}</td><td>{{ r.account_number }}</td><td>{{ r.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>
+            <form method="POST" action="/admin/withdraw-requests/{{ r.id }}/approve" class="d-inline"><input name="note" value="تمت الموافقة" type="hidden"><button class="btn btn-success btn-sm">✅ موافقة</button></form>
+            <form method="POST" action="/admin/withdraw-requests/{{ r.id }}/reject" class="d-inline"><input name="note" value="تم الرفض" type="hidden"><button class="btn btn-danger btn-sm">❌ رفض</button></form>
+        </td>
+    </tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}
